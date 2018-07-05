@@ -12,24 +12,10 @@ End = False
 class Window(QtGui.QMainWindow):
     
     def sleepChoice(self, text):
-        if text == "1000":
-            self.sleepTime = 1000
-        elif text == "100":
-            self.sleepTime = 100
-        elif text == "10":
-            self.sleepTime = 10
-        elif text == "0":
-            self.sleepTime = 0
+        self.sleepTime = int(text)
 
     def timeChoice(self, text):
-        if text == "180":
-            self.timeLength = 180
-        elif text == "120":
-            self.timeLength = 120
-        elif text == "60":
-            self.timeLength = 60
-        elif text == "10":
-            self.timeLength = 10
+        self.timeLength = int(text)
         
     def __init__(self):
         super(Window,self).__init__()
@@ -101,7 +87,7 @@ class Window(QtGui.QMainWindow):
             while sensor.isOnline() and time.time() < (self.starttime + self.timeLength):
             #while stopping == False:
                 timex = time.time() - self.starttime
-                ampval = sensorDC.get_currentValue()
+                ampval = float(sensorDC.get_currentRawValue())
                 f.write('%s, %s\n' % (timex, ampval))
                 print ('%s, %s' % (timex, ampval))
                 YAPI.Sleep(self.sleepTime, errmsg)
@@ -114,7 +100,7 @@ class Window(QtGui.QMainWindow):
         #self.ampCounter()
         xtime = []
         ymA = []
-        with open('data_'+str(int(starttime))+'.csv','r') as csvfile:
+        with open('data_'+str(int(self.starttime))+'.csv','r') as csvfile:
             plots = csv.reader(csvfile, delimiter=',')
             for row in plots:
                 xtime.append(float(row[0]))
