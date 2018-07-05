@@ -94,8 +94,6 @@ class Window(QtGui.QMainWindow):
     def ampCounter(self):
         starttime = time.time()
         timex = 0
-        with open("test.csv", "w") as f:
-            thewriter = csv.writer(f)
         errmsg = YRefParam()
         target = 'any'
         if YAPI.RegisterHub("usb", errmsg) != YAPI.SUCCESS:
