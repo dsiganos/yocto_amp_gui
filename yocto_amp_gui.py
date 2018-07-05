@@ -20,7 +20,7 @@ class Window(QtGui.QMainWindow):
         self.sleepTime = 0
         
     def Tslow(self):
-        self.timeLength = 180
+        self.timeLength = 60*15
     def Tmed(self):
         self.timeLength = 120
     def Tfast(self):
@@ -92,7 +92,7 @@ class Window(QtGui.QMainWindow):
         self.show()
 
     def ampCounter(self):
-        starttime = time.time()
+        self.starttime = time.time()
         timex = 0
         errmsg = YRefParam()
         target = 'any'
@@ -109,10 +109,10 @@ class Window(QtGui.QMainWindow):
         m = sensor.get_module()
         sensorDC = YCurrent.FindCurrent(m.get_serialNumber() + '.current1')
         print (sensorDC)
-        with open('data_'+str(int(starttime))+'.csv', "w") as f:
-            while sensor.isOnline() and time.time() < (starttime + self.timeLength):
+        with open('data_'+str(int(self.starttime))+'.csv', "w") as f:
+            while sensor.isOnline() and time.time() < (self.starttime + self.timeLength):
             #while stopping == False:
-                timex = time.time() - starttime
+                timex = time.time() - self.starttime
                 ampval = sensorDC.get_currentValue()
                 f.write('%s, %s\n' % (timex, ampval))
                 print ('%s, %s' % (timex, ampval))
