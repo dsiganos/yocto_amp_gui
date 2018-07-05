@@ -109,7 +109,7 @@ class Window(QtGui.QMainWindow):
         m = sensor.get_module()
         sensorDC = YCurrent.FindCurrent(m.get_serialNumber() + '.current1')
         print (sensorDC)
-        with open("test.csv", "w") as f:
+        with open('data_'+str(int(starttime))+'.csv', "w") as f:
             while sensor.isOnline() and time.time() < (starttime + self.timeLength):
             #while stopping == False:
                 timex = time.time() - starttime
@@ -126,7 +126,7 @@ class Window(QtGui.QMainWindow):
         #self.ampCounter()
         xtime = []
         ymA = []
-        with open('test.csv','r') as csvfile:
+        with open('data_'+str(int(starttime))+'.csv','r') as csvfile:
             plots = csv.reader(csvfile, delimiter=',')
             for row in plots:
                 xtime.append(float(row[0]))
