@@ -4,10 +4,13 @@ import matplotlib.pyplot as plt
 sys.path.append ("yoctolib")
 from yocto_api import *
 from yocto_current import *
+import threading
 
 start = True
 stopping = False
 End = False
+xtime = []
+ymA = []
 
 class Window(QtGui.QMainWindow):
     
