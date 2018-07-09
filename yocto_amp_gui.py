@@ -49,12 +49,17 @@ class Window(QtGui.QMainWindow):
         btn2 = QtGui.QPushButton("Display", self)
         btn2.clicked.connect(worker.ampPlot)
         btn2.resize(100,50)
-        btn2.move(50,100)
+        btn2.move(200,100)
+
+##        btnl = QtGui.QPushButton("live", self)
+##        btnl.clicked.connect(worker.livePlot)
+##        btnl.resize(100,50)
+##        btnl.move(350,100)
 
         btns = QtGui.QPushButton("stop", self)
         btns.clicked.connect(worker.stop)
         btns.resize(100,50)
-        btns.move(200,100)
+        btns.move(350,20)
 
         btn3 = QtGui.QPushButton("Quit", self)
         btn3.clicked.connect(QtCore.QCoreApplication.instance().quit)
