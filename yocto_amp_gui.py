@@ -1,10 +1,10 @@
-import os,sys,csv
+import os,sys,csv,threading
 from PyQt4 import QtGui, QtCore
 import matplotlib.pyplot as plt
 sys.path.append ("yoctolib")
 from yocto_api import *
 from yocto_current import *
-import threading
+
 
 start = False
 stopping = False
