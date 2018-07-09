@@ -47,9 +47,9 @@ class Window(QtGui.QMainWindow):
         btn1.move(200,20)
 
         btn2 = QtGui.QPushButton("Display", self)
-        btn2.clicked.connect(self.ampPlot)
+        btn2.clicked.connect(worker.ampPlot)
         btn2.resize(100,50)
-        btn2.move(200,100)
+        btn2.move(50,100)
 
         btns = QtGui.QPushButton("stop", self)
         btns.clicked.connect(worker.stop)
@@ -58,27 +58,10 @@ class Window(QtGui.QMainWindow):
 
         btn3 = QtGui.QPushButton("Quit", self)
         btn3.clicked.connect(QtCore.QCoreApplication.instance().quit)
-        #btn3.clicked.connect(self.over)
         btn3.resize(100,50)
         btn3.move(200,180)
-
-        #self.progress = QtGui.QProgressBar(self)
-        #self.progress.setGeometry(200,80,250,20)
         
         self.show()
-
-    def ampPlot(self):
-        stopping = True
-        #self.ampCounter()
-        xtime = []
-        ymA = []
-        with open('data_'+str(int(self.starttime))+'.csv','r') as csvfile:
-            plots = csv.reader(csvfile, delimiter=',')
-            for row in plots:
-                xtime.append(float(row[0]))
-                ymA.append(float(row[1]))
-        plt.plot(xtime,ymA)
-        plt.show()
 
         
 class workerThread(threading.Thread):
@@ -124,22 +107,19 @@ class workerThread(threading.Thread):
         m = sensor.get_module()
         sensorDC = YCurrent.FindCurrent(m.get_serialNumber() + '.current1')
         print (sensorDC)
-        #with open('data_'+str(int(self.starttime))+'.csv', "w") as f:
-        with open('test.csv', "w") as f:
+        with open('data_'+str(int(self.starttime))+'.csv', "w") as f:
             while sensor.isOnline() and time.time() < (self.starttime + self.timeLength):
-            #while stopping == False:
-                timex = time.time() - self.starttime
-                ampval = float(sensorDC.get_currentRawValue())
-                f.write('%s, %s\n' % (timex, ampval))
-                print ('%s, %s' % (timex, ampval))
-                YAPI.Sleep(self.sleepTime, errmsg)
-                #print ("test" + str(self.timeLength))
+                while self.go:
+                    timex = time.time() - self.starttime
+                    ampval = float(sensorDC.get_currentRawValue())
+                    f.write('%s, %s\n' % (timex, ampval))
+                    print ('%s, %s' % (timex, ampval))
+                    YAPI.Sleep(self.sleepTime, errmsg)
         YAPI.FreeAPI()
 
 
     def ampPlot(self):
         stopping = True
-        #self.ampCounter()
         xtime = []
         ymA = []
         with open('data_'+str(int(self.starttime))+'.csv','r') as csvfile:
