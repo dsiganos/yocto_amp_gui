@@ -1,6 +1,8 @@
 import os,sys,csv,threading
+from threading import Thread, Lock
 from PyQt4 import QtGui, QtCore
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 sys.path.append ("yoctolib")
 from yocto_api import *
 from yocto_current import *
@@ -9,16 +11,18 @@ from yocto_current import *
 start = False
 stopping = False
 End = False
-xtime = []
-ymA = []
+mutex = Lock()
+timeList = []
+ymAList = []
+fig = plt.figure()
+ax1 = fig.add_subplot(1,1,1)
 
 class Window(QtGui.QMainWindow):
     
     def __init__(self):
         super(Window,self).__init__()
-        self.setGeometry(50, 50, 500, 300)
+        self.setGeometry(50, 100, 500, 300)
         self.setWindowTitle("Graph Plotter")
-
 
         sleepCombo = QtGui.QComboBox(self)
         sleepCombo.addItem("1000")
