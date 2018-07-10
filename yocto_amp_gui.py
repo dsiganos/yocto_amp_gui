@@ -71,10 +71,10 @@ class WorkerThread(threading.Thread):
 
     def timeLengthSet(self, text):
         self.timeLength = int(text)
-        
+
     def startWork(self):
         self.go = True
-        
+
     def stopWork(self):
         self.go = False
         
@@ -132,15 +132,36 @@ class WorkerThread(threading.Thread):
 
     def kill(self):
         self.die = True
-        
+
+class LiveThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def animate(self, i):
+        ax1.clear()
+        mutex.acquire()
+        try:
+            ax1.plot(timeList,ymAList)
+        finally:
+            mutex.release()
+
+    def run(self):
+        print ("test")
+
 def run():
     global worker
+    global live
     worker = WorkerThread()
+    live = LiveThread()
     worker.start()
     app = QtGui.QApplication(sys.argv)
     GUI = Window()
     app.exec_()
     worker.kill()
 
+def go():
+    live.start()
+    ani = animation.FuncAnimation(fig, live.animate, interval=500)
+    plt.show()
 
 run()
