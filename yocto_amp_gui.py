@@ -56,10 +56,14 @@ class Window(QtGui.QMainWindow):
         stopBtn.clicked.connect(worker.stopWork)
         stopBtn.resize(100,50)
         stopBtn.move(350,20)
+
+        liveBtn = QtGui.QPushButton("live", self)
+        liveBtn.clicked.connect(go)
+        liveBtn.resize(100,50)
+        liveBtn.move(350,100)
         
         self.show()
 
-        
 class WorkerThread(threading.Thread):
 
     def sleepTimeSet(self, text):
@@ -102,6 +106,12 @@ class WorkerThread(threading.Thread):
             while sensor.isOnline() and time.time() < (self.starttime + self.timeLength) and self.go == True:
                 timex = time.time() - self.starttime
                 ampval = float(sensorDC.get_currentRawValue())
+                mutex.acquire()
+                try:
+                    timeList.append(timex)
+                    ymAList.append(ampval)
+                finally:
+                    mutex.release()
                 f.write('%s, %s\n' % (timex, ampval))
                 print ('%s, %s' % (timex, ampval))
                 if self.sleepTime > 0:
