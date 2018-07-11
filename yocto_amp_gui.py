@@ -112,6 +112,12 @@ class WorkerThread(threading.Thread):
         if YAPI.RegisterHub("usb", errmsg) != YAPI.SUCCESS:
             sys.exit("init error" + errmsg.value)
         sensor = YCurrent.FirstCurrent()
+        if sensor is None:
+            GUI.missing()
+            self.go = False
+            return
+        else:
+            pass
         m = sensor.get_module()
         sensorDC = YCurrent.FindCurrent(m.get_serialNumber() + '.current1')
         print (sensorDC)
