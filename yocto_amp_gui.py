@@ -7,10 +7,6 @@ sys.path.append ("yoctolib")
 from yocto_api import *
 from yocto_current import *
 
-
-start = False
-stopping = False
-End = False
 mutex = Lock()
 timeList = []
 ymAList = []
@@ -61,8 +57,20 @@ class Window(QtGui.QMainWindow):
         liveBtn.clicked.connect(go)
         liveBtn.resize(100,50)
         liveBtn.move(350,100)
-        
+
         self.show()
+
+    def mustStart(self):
+        choice = QtGui.QMessageBox.question(self, 'Must be reading amps',
+                                            "Do you want to start reading now?",
+                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if choice == QtGui.QMessageBox.Yes:
+            worker.startWork()
+        else:
+            pass
+    def missing(self):
+        plug = QtGui.QMessageBox.critical(self, 'Error',
+                                 "Please plug in yotco amp module")
 
 class WorkerThread(threading.Thread):
 
@@ -74,14 +82,19 @@ class WorkerThread(threading.Thread):
 
     def startWork(self):
         self.go = True
+        self.gone = True
 
     def stopWork(self):
-        self.go = False
-        
+        if self.gone == False:
+            GUI.mustStart()
+        else:
+            self.go = False
+
     def __init__(self):
         self.go = False
+        self.gone = False
         self.sleepTime = 1000
-        self.timeLength = 10
+        self.timeLength = 180
         self.die = False
         threading.Thread.__init__(self)
 
