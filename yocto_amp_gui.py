@@ -170,6 +170,7 @@ class LiveThread(threading.Thread):
 def run():
     global worker
     global live
+    global GUI
     worker = WorkerThread()
     live = LiveThread()
     worker.start()
