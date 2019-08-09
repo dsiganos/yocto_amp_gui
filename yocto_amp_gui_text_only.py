@@ -11,6 +11,7 @@ from yocto_current import *
 
 def run():
     timex = 0
+    starttime = time.time()
     errmsg = YRefParam()
     target = 'any'
     if YAPI.RegisterHub("usb", errmsg) != YAPI.SUCCESS:
@@ -23,6 +24,7 @@ def run():
     sensorDC = YCurrent.FindCurrent(m.get_serialNumber() + '.current1')
     print (sensorDC)
     while True:
+        timex = time.time() - starttime
         ampval = float(sensorDC.get_currentRawValue())
         print ('%s, %s' % (timex, ampval))
     YAPI.FreeAPI()

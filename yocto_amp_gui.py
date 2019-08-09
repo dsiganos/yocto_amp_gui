@@ -43,10 +43,11 @@ class Window(QtGui.QMainWindow):
         startBtn.resize(100,50)
         startBtn.move(200,20)
 
-        displayBtn = QtGui.QPushButton("Display", self)
-        displayBtn.clicked.connect(worker.plotGraph)
-        displayBtn.resize(100,50)
-        displayBtn.move(200,100)
+        self.displayBtn = QtGui.QPushButton("Display", self)
+        self.displayBtn.setDisabled(True)
+        self.displayBtn.clicked.connect(worker.plotGraph)
+        self.displayBtn.resize(100,50)
+        self.displayBtn.move(200,100)
 
         stopBtn = QtGui.QPushButton("stop", self)
         stopBtn.clicked.connect(worker.stopWork)
@@ -68,9 +69,16 @@ class Window(QtGui.QMainWindow):
             worker.startWork()
         else:
             pass
+
     def missing(self):
         plug = QtGui.QMessageBox.critical(self, 'Error',
                                  "Please plug in yotco amp module")
+
+    def displayGrayF(self):
+        self.displayBtn.setDisabled(False)
+
+    def displayGrayT(self):
+        self.displayBtn.setDisabled(True)
 
 class WorkerThread(threading.Thread):
 
@@ -83,12 +91,14 @@ class WorkerThread(threading.Thread):
     def startWork(self):
         self.go = True
         self.gone = True
+        GUI.displayGrayT()
 
     def stopWork(self):
         if self.gone == False:
             GUI.mustStart()
         else:
             self.go = False
+            GUI.displayGrayF()
 
     def __init__(self):
         self.go = False
@@ -174,14 +184,16 @@ def run():
     worker = WorkerThread()
     live = LiveThread()
     worker.start()
+    live.start()
     app = QtGui.QApplication(sys.argv)
     GUI = Window()
     app.exec_()
     worker.kill()
 
 def go():
-    live.start()
+    print ("test1")
     ani = animation.FuncAnimation(fig, live.animate, interval=500)
+    print ("test2")
     plt.show()
 
 run()
