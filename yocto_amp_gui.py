@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from PyQt4 import QtGui, QtCore
-import random
 import sys
 import time
 import os
@@ -251,7 +250,7 @@ class WorkerThread(threading.Thread):
             while sensor.isOnline() and time.time() < (self.starttime + self.timeLength) and self.go == True:
                 timex = time.time() - self.starttime
                 ampval = float(sensorDC.get_currentRawValue())
-                self.livedata.add_point(timex, ampval + random.randint(1,101))
+                self.livedata.add_point(timex, ampval)
                 f.write('%s, %s\n' % (timex, ampval))
                 print ('%s, %s' % (timex, ampval))
                 if self.sleepTime > 0:
