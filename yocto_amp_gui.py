@@ -249,7 +249,7 @@ class WorkerThread(threading.Thread):
         with open('data_'+str(int(self.starttime))+'.csv', "w") as f:
             while sensor.isOnline() and time.time() < (self.starttime + self.timeLength) and self.go == True:
                 timex = time.time() - self.starttime
-                ampval = float(sensorDC.get_currentRawValue())
+                ampval = abs(float(sensorDC.get_currentRawValue()))
                 self.livedata.add_point(timex, ampval)
                 f.write('%s, %s\n' % (timex, ampval))
                 print ('%s, %s' % (timex, ampval))
