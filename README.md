@@ -2,8 +2,8 @@
 A python GUI for the yocto amp ammeter 
 http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4
 
-sudo apt-get install python-qt4 python-tk
-pip install matplotlib
+`sudo apt-get install python-qt4 python-tk`  
+`pip install matplotlib`
 
 To access the USB device without root credentials, you need to install this udev rule:  
 `SUBSYSTEM=="usb", ATTRS{idVendor}=="24e0", ATTRS{idProduct}=="001f", MODE="0666"`
